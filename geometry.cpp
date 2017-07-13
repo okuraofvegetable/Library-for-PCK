@@ -38,30 +38,40 @@ double add(double a,double b)
 	return a+b;
 }
 
-struct P
-{
+struct P{
 	double x,y;
 	P() {}
 	P(double x,double y) : x(x),y(y){}
-	P operator + (P p)
-	{
+	P operator + (P p){
 		return P(add(x,p.x),add(y,p.y));
 	}
-	P operator - (P p)
-	{
+	P operator - (P p){
 		return P(add(x,-p.x),add(y,-p.y));
 	}
-	P operator * (double d)
-	{
+	P operator * (double d){
 		return P(x*d,y*d);
 	}
-	double dot(P p)
-	{
+	double dot(P p){
 		return add(x*p.x,y*p.y);
 	}
-	double det(P p)
-	{
+	double det(P p){
 		return add(x*p.y,-y*p.x);
+	}
+	double norm(){
+		return sqrt(x*x+y*y);
+	}
+	double norm2(){
+		return x*x+y*y;
+	}
+	double dist2(P p){
+		return sq(x-p.x)+sq(y-p.y);
+	}
+	P vert(){
+		return P(y,-x);
+	}
+	void dump(){
+		printf("%.12f %.12f\n",x,y);
+		return;
 	}
 };
 
