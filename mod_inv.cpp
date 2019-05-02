@@ -34,7 +34,8 @@ typedef vector<ll> vll;
 #define EQ(a,b) (abs((a)-(b))<eps)
 #define MOD 1000000007 // prime
 const int SIZE = 100100;
-ll inv[SIZE+10],fac[SIZE+10],facinv[SIZE+10];//hairetu size ha SIZE yorimo ookiku torukoto !!!
+ll inv[SIZE+10],fac[SIZE+10],facinv[SIZE+10];
+//size of arrays should be bigger than SIZE !!
 ll nCr(int n,int r)
 {
 	if(n<r)return -1ll;

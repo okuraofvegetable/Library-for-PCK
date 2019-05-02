@@ -33,34 +33,27 @@ double add(double a,double b)
 	if(abs(a+b)<eps*(abs(a)+abs(b)))return 0;
 	return a+b;
 }
-struct P
-{
+struct P{
 	double x,y;
 	P() {}
 	P(double x,double y):x(x),y(y){}
-	P operator +(P p)
-	{
+	P operator +(P p){
 		return P(add(x,p.x),add(y,p.y));
 	}
-	P operator -(P p)
-	{
+	P operator -(P p){
 		return P(add(x,-p.x),add(y,-p.y));
 	}
-	P operator *(double d)
-	{
+	P operator *(double d){
 		return P(d*x,d*y);
 	}
-	double dot(P p)
-	{
+	double dot(P p){
 		return add(x*p.x,y*p.y);
 	}
-	double det(P p)
-	{
+	double det(P p){
 		return add(x*p.y,-y*p.x);
 	}
 };
-bool comp(const P& p,const P& q)
-{
+bool comp(const P& p,const P& q){
 	if(p.x!=q.x)return p.x<q.x;
 	return p.y<q.y;
 }
@@ -82,26 +75,21 @@ vector<P> convex_hull(P* ps,int n)
 	qs.resize(k-1);
 	return qs;
 }
-double dist(P p,P q)
-{
+double dist(P p,P q){
 	return (p-q).dot(p-q);
 }
 int n;
 P v[50050];
-int main()
-{
+int main(){
 	scanf("%d",&n);
-	for(int i=0;i<n;i++)
-	{
+	for(int i=0;i<n;i++){
 		scanf("%lf %lf",&(v[i].x),&(v[i].y));
 	}
 	vector<P> cv;
 	cv=convex_hull(v,n);
 	double ans=0;
-	for(int i=0;i<cv.size();i++)
-	{
-		for(int j=i+1;j<cv.size();j++)
-		{
+	for(int i=0;i<cv.size();i++){
+		for(int j=i+1;j<cv.size();j++){
 			ans=max(ans,dist(cv[i],cv[j]));
 		}
 	}

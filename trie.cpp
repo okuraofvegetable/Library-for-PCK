@@ -30,13 +30,11 @@ typedef vector<ll> vll;
 #define SORT(x) sort((x).begin(),(x).end())
 #define all(x) (x).begin(),(x).end()
 #define EQ(a,b) (abs((a)-(b))<eps)
-struct Trie
-{
+struct Trie{
 	int child_num;
 	Trie *child[26];
 	bool flag;//sokode kakutei suruka
-	Trie()
-	{
+	Trie(){
 		child_num = 0;
 		flag = true;
 		for(int i=0;i<26;i++)child[i]=(Trie *)NULL;

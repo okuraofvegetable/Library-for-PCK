@@ -2,6 +2,7 @@
 struct BIT{
 	ll bit[MAX_N+1];
 	void add(int i,ll x){
+		i++;
 		while(i<=MAX_N){
 			bit[i]+=x;
 			i+=i&-i;
@@ -9,11 +10,16 @@ struct BIT{
 		return;
 	}
 	ll sum(int i){
+		i++;
 		ll res=0;
 		while(i>0){
 			res+=bit[i];
 			i-=i&-i;
 		}
 		return res;
+	}
+	ll sum(int l,int r){// [l,r]
+		if(l==0)return sum(r);
+		else return sum(r)-sum(l-1);
 	}
 };
