@@ -19,6 +19,15 @@ typedef vector<ll> vll;
 #define EQ(a,b) (abs((a)-(b))<eps)
 template<class T> void chmin(T& a,const T& b){if(a>b)a=b;}
 template<class T> void chmax(T& a,const T& b){if(a<b)a=b;}
+template<class T>
+void dump(vector<T> &vec){
+	for(int i=0;i<vec.size();i++){
+		cout << vec[i];
+		if(i+1<vec.size())cout << ' ';
+		else cout << endl;
+	}
+	return;
+}
 struct edge{
 	int from,to;
 	edge(){}
@@ -26,14 +35,13 @@ struct edge{
 };
 struct Tree{
 	int V;
-	int LOG_V;
 	int root;
 	vector<int> depth;
-	vector<vector<int> > dpar;
 	vector<int> par;
 	vector<int> subtree_size;
-	vector<int> centroid;
 	vector<vector<edge> > G;
+	vector<bool> dead; // for centroid decomposition
+	vector<int> sz;    // for centroid decomposition
 	Tree(){}
 	Tree(int v,int r=0){
 		V = v;
@@ -42,12 +50,8 @@ struct Tree{
 		depth.resize(V);
 		par.resize(V);
 		subtree_size.resize(V);
-		/* for doubling
-		LOG_V = 1;
-		while((1<<LOG_V)<=V)LOG_V++;
-		dpar.resize(LOG_V);
-		for(int i=0;i<LOG_V;i++)dpar[i].resize(V,-1);
-		*/
+		sz.resize(V,0);
+		dead.resize(V,false);
 	}
 	void add_edge(int u,int v){
 		G[u].pb(edge(u,v));
@@ -57,43 +61,52 @@ struct Tree{
 		depth[v]=d;
 		par[v]=p;
 		subtree_size[v]=1;
-		bool is_centroid = true;
 		for(int i=0;i<G[v].size();i++){
 			int u = G[v][i].to;
 			if(u==p)continue;
 			subtree_size[v]+=dfs(u,v,d+1);
-			if(subtree_size[u]>V/2)is_centroid=false;
 		}
-		if(V-subtree_size[v]>V/2)is_centroid=false;
-		if(is_centroid)centroid.pb(v);
 		return subtree_size[v];
 	}
-	void dfs(){
+	void init(){
 		dfs(root,-1,0);
 	}
-	void construct_dpar(){
-		for(int i=0;i<V;i++)dpar[0][i] = par[i];
-		for(int i=1;i<LOG_V;i++){
-			for(int j=0;j<V;j++){
-				if(dpar[i-1][j]==-1)dpar[i][j]=-1;
-				else dpar[i][j] = dpar[i-1][dpar[i-1][j]];
+
+	// following functions are for centroid decomposition
+	int subtree_size_dead(int v,int p){
+		sz[v] = 1;
+		for(int i=0;i<G[v].size();i++){
+			int u = G[v][i].to;
+			if(u!=p&&!dead[u]){
+				sz[v] += subtree_size_dead(u,v);
 			}
 		}
-		return;
+		return sz[v];
 	}
-	int kth_parent(int v,int k){
-		int res = v;
-		for(int i=0;i<LOG_V;i++){
-			if(k&(1<<i))res = dpar[i][res];
-			if(res==-1)return -1;
+	int centroid_dead(int v,int p,int n){
+		for(int i=0;i<G[v].size();i++){
+			int u = G[v][i].to;
+			if(u!=p&&!dead[u]){
+				if(sz[u]>n/2)return centroid_dead(u,v,n);
+			}
 		}
+		return v;
+	}
+	int centroid_decomposition(int v){
+		subtree_size_dead(v,-1);
+		int c = centroid_dead(v,-1,sz[v]);
+		dead[c] = true;
+		int res = 0;
+		for(int i=0;i<G[c].size();i++){
+			int u = G[c][i].to;
+			if(!dead[u]){
+				// count something within each subtree alone (without the centroid)
+				res = max(res,1+centroid_decomposition(u));
+			}
+		}
+		// count something between subtrees (through centroid)
+		dead[c] = false;
 		return res;
-	}
-	void dump_tree(){
-		for(int i=0;i<N;i++){
-			printf("id: %d, par %d, depth %d\n",i,par[i],depth[i]);
-		}
-		return;
 	}
 };
 int N;
@@ -106,6 +119,6 @@ int main(){
 		x--;y--;
 		G.add_edge(x,y);
 	}
-	G.dfs();
+	cout << G.centroid_decomposition(0) << endl;
 	return 0;
 }
