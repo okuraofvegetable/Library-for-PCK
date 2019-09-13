@@ -35,7 +35,7 @@ struct BIT2D{
 		}
 		return;
 	}
-	T	sum(int i,int j){
+	T sum(int i,int j){
 		i++;
 		T res=0;
 		while(i>0){
