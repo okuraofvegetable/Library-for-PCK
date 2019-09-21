@@ -18,11 +18,11 @@ typedef vector<ll> vll;
 #define EQ(a,b) (abs((a)-(b))<eps)
 template<class T> void chmin(T& a,const T& b){if(a>b)a=b;}
 template<class T> void chmax(T& a,const T& b){if(a<b)a=b;}
-#define MOD 1000000007ll // prime
 // How to devide :
 // ModInt a(6ll);
 // ModInt b(2ll);
 // a *= b.exp(MOD-2ll);  -> a/=b;  result: a = 3
+ll MOD = 1000000007ll; // if inv is needed, this shold be prime.
 struct ModInt{
 	ll val;
 	ModInt():val(0ll){}
