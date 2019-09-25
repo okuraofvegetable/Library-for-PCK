@@ -94,6 +94,7 @@ ll rng(ll a,ll b){
   default_random_engine engine(seed_gen());
   return uniform_int_distribution<ll>(a,b)(engine);
 } 
+// verifyed ABC135F https://atcoder.jp/contests/abc135/submissions/7692789
 struct RollingHash{
   const string s;
   vector<ModInt> hash_A,hash_B;
@@ -138,94 +139,7 @@ struct RollingHash{
 };
 ModInt RollingHash::A = ModInt(rng(5ll,MOD-1ll));
 ModInt RollingHash::B = ModInt(rng(5ll,MOD-1ll));
-struct DirectedGraph{
-  struct edge{
-    int to;
-    ll cost;
-    edge(){}
-    edge(int to,ll cost):to(to),cost(cost){}
-  };
-  int N;
-  vector<vector<edge> > g;
-  vector<bool> used;
-  vector<int> topo;
-  vector<int> rev;
-  bool sorted = false;
-  DirectedGraph(int N):N(N){
-    g.resize(N);
-  }
-  void add_edge(int s,int t,ll cost = 1ll){
-    g[s].pb(edge(t,cost));
-  }
-  void dfs(int v){
-    used[v] = true;
-    for(int i=0;i<g[v].size();i++){
-      int u = g[v][i].to;
-      if(used[u])continue;
-      dfs(u);
-    }
-    topo.pb(v);
-  }
-  void toposort(){
-    used.resize(N,false);
-    for(int i=0;i<N;i++){
-      if(!used[i])dfs(i);
-    }
-    reverse(all(topo));
-    rev.resize(N);
-    for(int i=0;i<N;i++){
-      rev[topo[i]] = i;
-    }
-    sorted = true;
-  }
-  bool exist_loop(){
-    assert(sorted);
-    for(int i=0;i<N;i++){
-      for(int j=0;j<g[i].size();j++){
-       int s = i, t = g[i][j].to;
-       if(rev[s]>=rev[t])return true;
-      }
-    }
-    return false;
-  } 
-  ll longest_path(){
-    assert(sorted);
-    vector<ll> dp(N,0ll);
-    ll len = 0ll;
-    for(int i=0;i<N;i++){
-      int s = topo[i];
-      for(int j=0;j<g[s].size();j++){
-        edge e = g[s][j];
-        chmax(dp[e.to],dp[s]+e.cost);
-      }
-      chmax(len,dp[s]);
-    }
-    return len;
-  }
-};
-string s;
-string t;
-string S;
 int main(){
   fastio();
-  cin >> s;
-  cin >> t;
-  while(S.size()<s.size()+t.size())S += s;
-  RollingHash sh(S);
-  RollingHash th(t);
-  auto tt = th.hash(0,t.size()-1);
-  DirectedGraph G(s.size());
-  for(int i=0;i<s.size();i++){
-    auto h = sh.hash(i,i+t.size()-1);
-    if(tt==h){
-      G.add_edge(i,(i+t.size())%s.size());
-    }
-  }
-  G.toposort();
-  if(G.exist_loop()){
-    cout << -1 << endl;
-  }else{
-    cout << G.longest_path() << endl;
-  }
   return 0;
 }
