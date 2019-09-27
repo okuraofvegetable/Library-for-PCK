@@ -22,7 +22,7 @@ template<class T> void chmax(T& a,const T& b){if(a<b)a=b;}
 // ModInt a(6ll);
 // ModInt b(2ll);
 // a *= b.exp(MOD-2ll);  -> a/=b;  result: a = 3
-ll MOD = 1000000007ll; // if inv is needed, this shold be prime.
+const ll MOD = 1000000007ll; // if inv is needed, this shold be prime.
 struct ModInt{
 	ll val;
 	ModInt():val(0ll){}
@@ -46,27 +46,29 @@ struct ModInt{
 	ModInt operator+(const ModInt& x)const{return ModInt(*this)+=x;}
 	ModInt operator-(const ModInt& x)const{return ModInt(*this)-=x;}
 	ModInt operator*(const ModInt& x)const{return ModInt(*this)*=x;}
+  friend istream& operator>>(istream&i,ModInt& x){i>>x.val;return i;}
+  friend ostream& operator<<(ostream&o,ModInt& x){o<<x.val;return o;}
+  ModInt pow(ModInt a,ll x) const {
+    ModInt res = ModInt(1ll);
+    while(x){
+      if(x&1)res *= a;
+      x >>= 1;
+      a = a*a;
+    }
+    return res;
+  }
 };
-istream& operator>>(istream&i,ModInt&x){i>>x.val;return i;}
-ostream& operator<<(ostream&o,const ModInt&x){o<<x.val;return o;}
-ModInt pow(ModInt a,ll x){
-	ModInt res = ModInt(1ll);
-	while(x){
-		if(x&1)res *= a;
-		x >>= 1;
-		a = a*a;
-	}
-	return res;
-}
-const int SIZE = 100100;
-ModInt inv[SIZE+10],fac[SIZE+10],facinv[SIZE+10];
+vector<ModInt> inv,fac,facinv;
 // notice: 0C0 = 1 
 ModInt nCr(int n,int r){
 	assert(!(n<r));
 	assert(!(n<0||r<0));
 	return fac[n]*facinv[r]*facinv[n-r];
 }
-void init(){
+void init(int SIZE){
+  fac.resize(SIZE+10);
+  inv.resize(SIZE+10);
+  facinv.resize(SIZE+10);
 	fac[0]=ModInt(1ll);
 	for(int i=1;i<=SIZE;i++)fac[i]=fac[i-1]*ModInt(i);
 	inv[1]=ModInt(1ll);
@@ -76,7 +78,7 @@ void init(){
 	return;
 }
 int main(){
-	init();
-    return 0;
+  init(100100);
+  return 0;
 }
 

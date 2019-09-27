@@ -1,13 +1,12 @@
 #include <cstdio>
 #include <algorithm>
-const int SIZE = 100100;
-struct UnionFind
-{
-	int par[SIZE],rank[SIZE];
+struct UnionFind{
+	vector<int> par,rank;
 	void init(int n){
+    par.resize(n);
+    rank.resize(n,0);
 		for(int i=0;i<n;i++){
 			par[i] = i;
-			rank[i] = 0;
 		}
 	}
 	int find(int x){
@@ -28,7 +27,6 @@ struct UnionFind
 		return find(x) == find(y);
 	}
 }uf;
-int main()
-{
+int main(){
 	return 0;
 }
