@@ -24,30 +24,30 @@ template<class T> void chmax(T& a,const T& b){if(a<b)a=b;}
 // a *= b.exp(MOD-2ll);  -> a/=b;  result: a = 3
 const ll MOD = 1000000007ll; // if inv is needed, this shold be prime.
 struct ModInt{
-	ll val;
-	ModInt():val(0ll){}
-	ModInt(ll v):val(((v%MOD)+MOD)%MOD){}
-	ModInt exp(ll y)const{
-		if(!y)return ModInt(1ll);
-		ModInt a = exp(y/2ll);
-		a *= a;
-		if(y&1)a*=(*this);
-		return a;
-	}
-	bool operator==(const ModInt& x)const{return val==x.val;}
-	inline bool operator!=(const ModInt& x)const{return !(*this==x);}
-	bool operator<(const ModInt& x)const{return val<x.val;}
-	bool operator>(const ModInt& x)const{return val>x.val;}
-	inline bool operator>=(const ModInt& x)const{return !(*this<x);}
-	inline bool operator<=(const ModInt& x)const{return !(*this>x);}
-	ModInt& operator+=(const ModInt& x){if((val+=x.val)>=MOD)val-=MOD;return *this;}
-	ModInt& operator-=(const ModInt& x){if((val+=MOD-x.val)>=MOD)val-=MOD;return *this;}
-	ModInt& operator*=(const ModInt& x){(val*=x.val)%=MOD;return *this;}
-	ModInt operator+(const ModInt& x)const{return ModInt(*this)+=x;}
-	ModInt operator-(const ModInt& x)const{return ModInt(*this)-=x;}
-	ModInt operator*(const ModInt& x)const{return ModInt(*this)*=x;}
+  ll val;
+  ModInt():val(0ll){}
+  ModInt(ll v):val(((v%MOD)+MOD)%MOD){}
+  ModInt exp(ll y)const{
+  	if(!y)return ModInt(1ll);
+  	ModInt a = exp(y/2ll);
+  	a *= a;
+  	if(y&1)a*=(*this);
+  	return a;
+  }
+  bool operator==(const ModInt& x)const{return val==x.val;}
+  inline bool operator!=(const ModInt& x)const{return !(*this==x);}
+  bool operator<(const ModInt& x)const{return val<x.val;}
+  bool operator>(const ModInt& x)const{return val>x.val;}
+  inline bool operator>=(const ModInt& x)const{return !(*this<x);}
+  inline bool operator<=(const ModInt& x)const{return !(*this>x);}
+  ModInt& operator+=(const ModInt& x){if((val+=x.val)>=MOD)val-=MOD;return *this;}
+  ModInt& operator-=(const ModInt& x){if((val+=MOD-x.val)>=MOD)val-=MOD;return *this;}
+  ModInt& operator*=(const ModInt& x){(val*=x.val)%=MOD;return *this;}
+  ModInt operator+(const ModInt& x)const{return ModInt(*this)+=x;}
+  ModInt operator-(const ModInt& x)const{return ModInt(*this)-=x;}
+  ModInt operator*(const ModInt& x)const{return ModInt(*this)*=x;}
   friend istream& operator>>(istream&i,ModInt& x){i>>x.val;return i;}
-  friend ostream& operator<<(ostream&o,ModInt& x){o<<x.val;return o;}
+  friend ostream& operator<<(ostream&o,const ModInt& x){o<<x.val;return o;}
   ModInt pow(ModInt a,ll x) const {
     ModInt res = ModInt(1ll);
     while(x){

@@ -1,20 +1,14 @@
 #include <stdio.h>
-void qsort(int a[],int left,int right)
-{
-	if(left < right)
-	{
+void qsort(int a[],int left,int right){
+	if(left < right){
 		int pvot,tmp,i,j;
 		i = left;
 		j = right;
 		pvot = (a[i] + a[j])/2;
-		while(1)
-		{
+		while(1){
 			while(a[i] < pvot)i++;
 			while(a[j] > pvot)j--;
-			if(i >= j)
-			{
-				break;
-			}
+			if(i >= j)break;
 			tmp = a[i];
 			a[i] = a[j];
 			a[j] = tmp;
@@ -26,18 +20,15 @@ void qsort(int a[],int left,int right)
 	}
 	return;
 }
-int main(void)
-{
+int main(void){
 	int i,n;
 	int array[100];
 	scanf("%d",&n);
-	for(i = 0;i < n;i++)
-	{
+	for(i = 0;i < n;i++){
 		scanf("%d",&array[i]);
 	}
 	qsort(array,0,n-1);
-	for(i = 0;i < n-1;i++)
-	{
+	for(i = 0;i < n-1;i++){
 		printf("%d ",array[i]);
 	}
 	printf("%d\n",array[n-1]);
